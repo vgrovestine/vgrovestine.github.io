@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Humidex Calculator</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <style>
+      body,
+      input {
+        font-size: 6vw;
+        font-family: Roboto, serif;
+        background-color: #fff;
+        color: #111;
+      }
+      input {
+        text-align: center;
+        width: 2.25em;
+        margin-right: 0.125em;
+      }
+      table {
+        border-collapse: collapse;
+        margin: 0.25em auto;
+      }
+      td {
+        white-space: nowrap;
+        padding: 0.125em 0.25em;
+        vertical-align: top;
+        border-bottom: 1px solid #eee;
+      }
+      #calculated_humidex_wrapper td {
+        border-bottom: 0.03125em solid;
+      }
+      #calculated_humidex_wrapper label {
+        font-weight: bold;
+      }
+      #calculated_humidex_wrapper label a {
+        color: inherit;
+        text-decoration: none;
+      }
+      #calculated_humidex_wrapper input {
+        border-color: transparent;
+        font-weight: bold;
+      }
+      .humidex_below_20 * {
+        background-color: transparent;
+      }
+      .humidex_20_29 * {
+        background-color: yellow;
+      }
+      .humidex_20_29 label::after {
+        display: block;
+        font-weight: normal;
+        font-size: 0.5em;
+        content: "Little discomfort";
+      }
+      .humidex_30_39 * {
+        background-color: orange;
+      }
+      .humidex_30_39 label::after{
+        display: block;
+        font-weight: normal;
+        font-size: 0.5em;
+        content: "Moderate discomfort";
+      }
+      .humidex_40_45 * {
+        background-color: orangered;
+      }
+      .humidex_40_45 label::after {
+        display: block;
+        font-weight: normal;
+        font-size: 0.5em;
+        content: "Great discomfort; avoid exertion"
+      }
+      .humidex_above_45 * {
+        background-color: red;
+      }
+      .humidex_above_45 label::after {
+        display: block;
+        font-weight: normal;
+        font-size: 0.5em;
+        content: "Dangerous; heat stroke possible";
+      }
+
+
+    </style>
+    <script type="text/javascript">
+      function calculateHumidex(form) {
+        var x_temperature_c = parseFloat(form.temperature_c.value);
+        var x_rel_humidity = parseFloat(form.rel_humidity.value);
+        if(x_temperature_c >= 20 && x_rel_humidity >= 20 && x_rel_humidity <= 100) {
+          var x_calculated_humidex = x_temperature_c + (5 / 9) * ((6.122 * Math.pow(10, (7.5 * x_temperature_c / (237.7 + x_temperature_c))) * x_rel_humidity / 100) - 10);
+          if(x_calculated_humidex < x_temperature_c) {
+            x_calculated_humidex = x_temperature_c;
+          
+          }
+          x_calculated_humidex = Math.round(x_calculated_humidex);
+          form.calculated_humidex.value = x_calculated_humidex;
+          if(x_calculated_humidex > 45) {
+            document.getElementById("calculated_humidex_wrapper").className = "humidex_above_45";
+          }
+          else if(x_calculated_humidex >= 40) {
+            document.getElementById("calculated_humidex_wrapper").className = "humidex_40_45";
+          }
+          else if(x_calculated_humidex >= 30) {
+            document.getElementById("calculated_humidex_wrapper").className = "humidex_30_39";
+          }
+          else if(x_calculated_humidex >= 20) {
+            document.getElementById("calculated_humidex_wrapper").className = "humidex_20_29";
+          }
+          else {
+            document.getElementById("calculated_humidex_wrapper").className = "humidex_below_20";
+          }
+          return true;
+        }
+        else {
+          form.calculated_humidex.value = "";
+          if(form.temperature_c.value.length > 0 && form.rel_humidity.value.length) {
+            alert("Temperature must be 20-45C (68-113F).\nRelative Humidity must be 20-100%.");
+          }
+        }
+        return false;
+      }
+      function convertCelciusToFarenheit(temperature_c) {
+        var temperature_f = temperature_c * 9 / 5 + 32;
+        return Math.round(temperature_f);
+      }
+      function convertFarenheitToCelcius(temperature_f) {
+        var temperature_c = 5 / 9 * (temperature_f - 32);
+        return Math.round(temperature_c);
+      }
+
+    </script>
+  </head>
+  <body>
+    <form action="#">
+      <table>
+        <tr id="calculated_humidex_wrapper">
+          <td><label id="calculated_humidex_label" for="calculated_humidex"><a href="https://www.canada.ca/en/environment-climate-change/services/seasonal-weather-hazards/warm-season-weather-hazards.html#toc7">Humidex</a></label></td>
+          <td><input id="calculated_humidex" name="calculated_humidex" type="text" readonly disabled></td>
+        </tr>
+        <tr>
+          <td rowspan="2"><label id="temperature_label" for="temperature_c">Temperature</label></td>
+          <td><input id="temperature_c" name="temperature_c" type="text" value="" required onchange="document.getElementById('temperature_f').value=convertCelciusToFarenheit(this.value); calculateHumidex(this.form);">&#176;C</td>
+        </tr>
+        <tr>
+          <td><input id="temperature_f" name="temperature_f" type="text" value="" onchange="document.getElementById('temperature_c').value=convertFarenheitToCelcius(this.value);">&#176;F</td>
+        </tr>
+        <tr>
+          <td><label id="rel_humidity_label" for="rel_humidity">Relative Humidity</label></td>
+          <td><input id="rel_humidity" name="rel_humidity" type="text" value="" required onchange="calculateHumidex(this.form);">%</td>
+        </tr>
+      </table>
+    </form>
+  </body>
+</html>
