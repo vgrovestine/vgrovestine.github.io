@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+    integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      border: none;
+      box-sizing: border-box;
+    }
+    html,
+    body {
+      height: 100%;
+      display: grid;
+    }
+    body {
+      background: #fafafa;
+      color: #4b4b4b;
+      font-family: Lato, sans-serif;
+      font-size: 275%;
+      line-height: 1em;
+      font-weight: 300;
+      margin: 0;
+      padding: 0;
+    }
+    div#container {
+      margin: auto;
+      padding: 1em 0 2.5em 0;
+      width: 70%;
+      max-width: 1280px;
+    }
+    @media (max-width: 1000px) and (min-width: 801px) {
+      div#container {
+        width: 80%;
+      }
+    }
+    @media (max-width: 800px) and (min-width: 601px) {
+      div#container {
+        width: 90%;
+      }
+    }
+    @media (max-width: 600px) {
+      div#container {
+        width: 100%;
+      }
+    }
+    main {
+      border-top: 1px solid #969696;
+      border-bottom: 1px solid #969696;
+    }
+    h1 {
+      font-size: 1em;
+      font-weight: 300;
+      padding: 0 0.375em 0.375em 0.375em;
+    }
+    a {
+      color: #159;
+      text-decoration: none;
+    }
+    a:focus,
+    a:hover,
+    a:active {
+      color: #900;
+    }
+    ul.cardwall {
+      padding: 0.375em 0;
+      margin: 0.1875em 0 0 0;
+      list-style-type: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      align-items: baseline;
+    }
+    ul.cardwall li {
+      background-color: transparent;
+      border: 0.375em solid transparent;
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: 33%;
+    }
+    ul.cardwall li.smaller {
+      font-size: 0.75em;
+      margin: 0.375em 0.875em;
+    }
+    ul.cardwall li span.icon {
+      width: 1.3333em;
+      text-align: center;
+    }
+    ul.cardwall li a {
+      white-space: nowrap;
+      background-color: #969696;
+      color: #fafafa;
+      padding: 0.875em;
+      display: block;
+      opacity: 0.8;
+    }
+    ul.cardwall li a:hover,
+    ul.cardwall li a:focus {
+      opacity: 1;
+    }
+    ul.cardwall li.bitbucket a {
+      background-color: #1c46a6;
+    }
+    ul.cardwall li.dev_to a {
+      background-color: #0a0a0a;
+    }
+    ul.cardwall li.email a {
+      background-color: #d93025;
+    }
+    ul.cardwall li.github a {
+      background-color: #24292e;
+    }
+    ul.cardwall li.linkedin a {
+      background-color: #2977b4;
+    }
+    ul.cardwall li.mixcloud a {
+      background-color: #273a4a;
+    }
+    ul.cardwall li.reddit a {
+      background-color: #ff4500;
+    }
+    ul.cardwall li.twitter a {
+      background-color: #39a1f2;
+    }
+    ul.cardwall li.wotc a {
+      background-color: #684a35;
+    }
+    ul.cardwall li.xbox a {
+      background-color: #1f7c0f;
+    }
+  </style>
+  <title>Vincent Grovestine</title>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Find me:</h1>
+    </header>
+    <main>
+      <nav>
+        <ul class="cardwall">
+          <li class="email"><a href="mailto:vincent@grovestine.com"><span class="icon far fa-envelope"></span> E-Mail</a></li>
+          <li class="twitter"><a href="https://twitter.com/vgrovestine"><span class="icon fab fa-twitter"></span> Twitter</a></li>
+          <li class="linkedin"><a href="https://www.linkedin.com/in/vgrovestine/"><span class="icon fab fa-linkedin-in"></span> LinkedIn</a></li>
+          <li class="reddit"><a href="https://www.reddit.com/user/PulmonaryGravy"><span class="icon fab fa-reddit-alien"></span> Reddit</a></li>
+          <li class="github"><a href="https://github.com/vgrovestine"><span class="icon fab fa-github"></span> GitHub</a></li>
+          <li class="mixcloud"><a href="http://www.mixcloud.com/PulmonaryGravy/"><span class="icon fab fa-mixcloud"></span> Mixcloud</a></li>
+          <li class="xbox"><a href="https://account.xbox.com/en-ca/Profile?gamertag=PulmonaryGravyX"><span class="icon fab fa-xbox"></span> Xbox</a></li>
+          <li class="wotc"><a href="https://mtga.untapped.gg/profile/ca38a7a9-af54-4323-8c37-1e3a58abe4d3/CMYFDVHADZASLIVYZSZXQ3ZGCI"><span class="icon fab fa-wizards-of-the-coast"></span> MtG Arena</a></li>
+        </ul>
+      </nav>
+    </main>
+  </div>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-1006915-2']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</body>
+</html>
