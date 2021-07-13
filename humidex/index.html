@@ -5,84 +5,97 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <style>
       body,
-      input {
-        font-size: 6vw;
+      input[type="text"] {
+        font-size: 4vw;
         font-family: Roboto, serif;
         background-color: #fff;
         color: #111;
       }
-      input {
-        text-align: center;
-        width: 2.25em;
-        margin-right: 0.125em;
+      input[type="text"] {
+        text-align: right;
+        width: 2.125em;
+        padding: 0 0.0625em;
+        margin: 0 0.0625em;
+        border: 0.03125em solid #555;
+        background-color: #fcfcfc;
       }
       table {
         border-collapse: collapse;
-        margin: 0.25em auto;
+        border: 0.03125em solid #555;
+        margin: 0 auto;
       }
       td {
         white-space: nowrap;
-        padding: 0.125em 0.25em;
+        padding: 0.25em;
         vertical-align: top;
-        border-bottom: 1px solid #eee;
+        background-color: #f3f3f3;
       }
-      #calculated_humidex_wrapper td {
-        border-bottom: 0.03125em solid;
+      .smaller {
+        font-size: 0.5em;
       }
-      #calculated_humidex_wrapper label {
+      .hidden {
+        display: none;
+      }
+      #datetime_wrapper td {
+        border-bottom: 0.03125em solid #555;
         font-weight: bold;
       }
-      #calculated_humidex_wrapper label a {
+      /*
+      #temperature_wrapper,
+      #rel_humidity_wrapper { }
+      */
+      #calculated_humidex_wrapper,
+      #calculated_heatindex_c_wrapper,
+      #calculated_wetbulb_c_wrapper {
+        display: none;
+      }
+      #legend_wrapper td {
+        color: #555;
+        font-size: 0.5em;
+        text-align: center;
+        padding: 0.5em;
+      }
+      #legend_wrapper td label {
+        display: none;
+      }
+      #legend_wrapper td span {
+        margin: 0 0.5em;
+      }
+      #legend_wrapper td .box {
+        display: inline-block;
+        width: 1em;
+        height: 0.75em;
+      }
+      .calculated_wrapper label a {
         color: inherit;
         text-decoration: none;
       }
-      #calculated_humidex_wrapper input {
+      .calculated_wrapper input {
         border-color: transparent;
-        font-weight: bold;
-      }
-      .humidex_below_20 * {
         background-color: transparent;
       }
-      .humidex_20_29 * {
+      .impact_nil * {
+        background-color: lightgreen; 
+      }
+      .impact_low * {
         background-color: yellow;
       }
-      .humidex_20_29 label::after {
-        display: block;
-        font-weight: normal;
-        font-size: 0.5em;
-        content: "Little discomfort";
-      }
-      .humidex_30_39 * {
+      .impact_moderate * {
         background-color: orange;
       }
-      .humidex_30_39 label::after{
-        display: block;
-        font-weight: normal;
-        font-size: 0.5em;
-        content: "Moderate discomfort";
-      }
-      .humidex_40_45 * {
+      .impact_high * {
         background-color: orangered;
       }
-      .humidex_40_45 label::after {
-        display: block;
-        font-weight: normal;
-        font-size: 0.5em;
-        content: "Great discomfort; avoid exertion"
+      .impact_extreme * {
+        background-color: crimson;
       }
-      .humidex_above_45 * {
-        background-color: red;
-      }
-      .humidex_above_45 label::after {
-        display: block;
-        font-weight: normal;
-        font-size: 0.5em;
-        content: "Dangerous; heat stroke possible";
-      }
-
-
     </style>
     <script type="text/javascript">
+      function calculate(form) {
+        calculateHumidex(form);
+        calculateHeatindex(form);
+        calculateWetbulb(form);
+      }
       function calculateHumidex(form) {
         var x_temperature_c = parseFloat(form.temperature_c.value);
         var x_rel_humidity = parseFloat(form.rel_humidity.value);
@@ -95,27 +108,98 @@
           x_calculated_humidex = Math.round(x_calculated_humidex);
           form.calculated_humidex.value = x_calculated_humidex;
           if(x_calculated_humidex > 45) {
-            document.getElementById("calculated_humidex_wrapper").className = "humidex_above_45";
+            document.getElementById("calculated_humidex_wrapper").className = "calculated_wrapper impact_extreme";
           }
           else if(x_calculated_humidex >= 40) {
-            document.getElementById("calculated_humidex_wrapper").className = "humidex_40_45";
+            document.getElementById("calculated_humidex_wrapper").className = "calculated_wrapper impact_high";
           }
           else if(x_calculated_humidex >= 30) {
-            document.getElementById("calculated_humidex_wrapper").className = "humidex_30_39";
+            document.getElementById("calculated_humidex_wrapper").className = "calculated_wrapper impact_moderate";
           }
           else if(x_calculated_humidex >= 20) {
-            document.getElementById("calculated_humidex_wrapper").className = "humidex_20_29";
+            document.getElementById("calculated_humidex_wrapper").className = "calculated_wrapper impact_low";
           }
           else {
-            document.getElementById("calculated_humidex_wrapper").className = "humidex_below_20";
+            document.getElementById("calculated_humidex_wrapper").className = "calculated_wrapper impact_nil";
           }
+          document.getElementById("calculated_humidex_wrapper").style.display = (x_calculated_humidex > x_temperature_c) ? "table-row" : "none";
           return true;
         }
         else {
+          document.getElementById("calculated_humidex_wrapper").style.display = "none";
           form.calculated_humidex.value = "";
-          if(form.temperature_c.value.length > 0 && form.rel_humidity.value.length) {
-            alert("Temperature must be 20-45C (68-113F).\nRelative Humidity must be 20-100%.");
+        }
+        return false;
+      }
+      function calculateHeatindex(form) {
+        var x_temperature_c = parseFloat(form.temperature_c.value);
+        var x_rel_humidity = parseFloat(form.rel_humidity.value);
+        if(x_temperature_c >= 27 && x_rel_humidity >= 40 && x_rel_humidity <= 100) {
+          var x_calculated_heatindex_c = -8.78469475556 
+            + (1.61139411 * x_temperature_c) 
+            + (2.33854883889 * x_rel_humidity) 
+            + (-0.14611605 * x_temperature_c * x_rel_humidity) 
+            + (-0.012308094 * Math.pow(x_temperature_c, 2)) 
+            + (-0.0164248277778 * Math.pow(x_rel_humidity, 2)) 
+            + (0.002211732 * Math.pow(x_temperature_c, 2) * x_rel_humidity) 
+            + (0.00072546 * x_temperature_c * Math.pow(x_rel_humidity, 2))  
+            + (-0.000003582 * Math.pow(x_temperature_c, 2) * Math.pow(x_rel_humidity, 2));
+          x_calculated_heatindex_c = Math.round(x_calculated_heatindex_c);
+          form.calculated_heatindex_c.value = x_calculated_heatindex_c;  
+          form.calculated_heatindex_f.value = convertCelciusToFarenheit(x_calculated_heatindex_c);  
+          if(x_calculated_heatindex_c > 54) {
+            document.getElementById("calculated_heatindex_c_wrapper").className = "calculated_wrapper impact_extreme";
           }
+          else if(x_calculated_heatindex_c >= 41) {
+            document.getElementById("calculated_heatindex_c_wrapper").className = "calculated_wrapper impact_high";
+          }
+          else if(x_calculated_heatindex_c >= 32) {
+            document.getElementById("calculated_heatindex_c_wrapper").className = "calculated_wrapper impact_moderate";
+          }
+          else if(x_calculated_heatindex_c >= 26) {
+            document.getElementById("calculated_heatindex_c_wrapper").className = "calculated_wrapper impact_low";
+          }
+          else {
+            document.getElementById("calculated_heatindex_c_wrapper").className = "calculated_wrapper impact_nil";
+          }
+          document.getElementById("calculated_heatindex_c_wrapper").style.display = (x_calculated_heatindex_c > x_temperature_c) ? "table-row" : "none";
+          return true;
+        }
+        else {
+          document.getElementById("calculated_heatindex_c_wrapper").style.display = "none";
+          form.calculated_heatindex_c.value = "";
+        }
+        return false;
+      }
+      function calculateWetbulb(form) {
+        var x_temperature_c = parseFloat(form.temperature_c.value);
+        var x_rel_humidity = parseFloat(form.rel_humidity.value);
+        if(x_temperature_c > 0 && x_rel_humidity > 0 && x_rel_humidity <= 100) {
+          var x_calculated_wetbulb_c = x_temperature_c * Math.atan(0.151977 * Math.pow((x_rel_humidity + 8.313659), 0.5)) + Math.atan(x_temperature_c + x_rel_humidity) - Math.atan(x_rel_humidity - 1.676331) + 0.00391838 * Math.pow((x_rel_humidity), 1.5) * Math.atan(0.023101 * x_rel_humidity) - 4.686035;
+          x_calculated_wetbulb_c = Math.round(x_calculated_wetbulb_c);
+          form.calculated_wetbulb_c.value = x_calculated_wetbulb_c;
+          form.calculated_wetbulb_f.value = convertCelciusToFarenheit(x_calculated_wetbulb_c);
+          if(x_calculated_wetbulb_c >= 35) {
+            document.getElementById("calculated_wetbulb_c_wrapper").className = "calculated_wrapper impact_extreme";
+          }
+          else if(x_calculated_wetbulb_c >= 31) {
+            document.getElementById("calculated_wetbulb_c_wrapper").className = "calculated_wrapper impact_high";
+          }
+          else if(x_calculated_wetbulb_c >= 28) {
+            document.getElementById("calculated_wetbulb_c_wrapper").className = "calculated_wrapper impact_moderate";
+          }
+          else if(x_calculated_wetbulb_c >= 25) {
+            document.getElementById("calculated_wetbulb_c_wrapper").className = "calculated_wrapper impact_low";
+          }
+          else {
+            document.getElementById("calculated_wetbulb_c_wrapper").className = "calculated_wrapper impact_nil";
+          }
+          document.getElementById("calculated_wetbulb_c_wrapper").style.display = "table-row";
+          return true;
+        }
+        else {
+          document.getElementById("calculated_wetbulb_c_wrapper").style.display = "none";
+          form.calculated_wetbulb_c.value = "";
         }
         return false;
       }
@@ -127,26 +211,55 @@
         var temperature_c = 5 / 9 * (temperature_f - 32);
         return Math.round(temperature_c);
       }
-
     </script>
   </head>
   <body>
-    <form action="#">
+    <form action="#" onsubmit="calculate(this.form); return false;">
       <table>
-        <tr id="calculated_humidex_wrapper">
-          <td><label id="calculated_humidex_label" for="calculated_humidex"><a href="https://www.canada.ca/en/environment-climate-change/services/seasonal-weather-hazards/warm-season-weather-hazards.html#toc7">Humidex</a></label></td>
-          <td><input id="calculated_humidex" name="calculated_humidex" type="text" readonly disabled></td>
+        <tr id="datetime_wrapper">
+          <td colspan="3">
+            <label>
+              OBS 
+              <script>
+                d = new Date(); 
+                document.write(d.toLocaleString('en-CA', { year: 'numeric', month: 'long', day: 'numeric', hour12: false, hour: '2-digit', minute: '2-digit' }));
+              </script>
+            </label>
+          </td>
         </tr>
-        <tr>
-          <td rowspan="2"><label id="temperature_label" for="temperature_c">Temperature</label></td>
-          <td><input id="temperature_c" name="temperature_c" type="text" value="" required onchange="document.getElementById('temperature_f').value=convertCelciusToFarenheit(this.value); calculateHumidex(this.form);">&#176;C</td>
-        </tr>
-        <tr>
+        <tr id="temperature_wrapper">
+          <td><label id="temperature_label" for="temperature_c">Temperature</label></td>
+          <td><input id="temperature_c" name="temperature_c" type="text" value="" required onchange="document.getElementById('temperature_f').value=convertCelciusToFarenheit(this.value); calculate(this.form);">&#176;C</td>
           <td><input id="temperature_f" name="temperature_f" type="text" value="" onchange="document.getElementById('temperature_c').value=convertFarenheitToCelcius(this.value);">&#176;F</td>
+          </td>
         </tr>
-        <tr>
+        <tr id="rel_humidity_wrapper">
           <td><label id="rel_humidity_label" for="rel_humidity">Relative Humidity</label></td>
-          <td><input id="rel_humidity" name="rel_humidity" type="text" value="" required onchange="calculateHumidex(this.form);">%</td>
+          <td colspan="2"><input id="rel_humidity" name="rel_humidity" type="text" value="" required onchange="calculate(this.form);">%</td>
+        </tr>
+        <tr id="legend_wrapper">
+          <td colspan="3">
+            <label>Feel-like Impact:</label>
+            <span class="impact_extreme"><div class="box"></div> Extreme</span>
+            <span class="impact_high"><div class="box"></div> High</span>
+            <span class="impact_moderate"><div class="box"></div> Moderate</span>
+            <span class="impact_low"><div class="box"></div> Low</span>
+            <span class="impact_nil"><div class="box"></div> Nil</span>
+          </td>
+        </tr>
+        <tr class="calculated_wrapper" id="calculated_wetbulb_c_wrapper">
+          <td><label id="calculated_wetbulb_c_label" for="calculated_wetbulb_c">Wet Bulb</label></td>
+          <td><input id="calculated_wetbulb_c" name="calculated_wetbulb_c" type="text" readonly disabled>&#176;C</td>
+          <td><input id="calculated_wetbulb_f" name="calculated_wetbulb_f" type="text" readonly disabled>&#176;F</td>
+        </tr>
+        <tr class="calculated_wrapper" id="calculated_humidex_wrapper">
+          <td><label id="calculated_humidex_label" for="calculated_humidex">Humidex <span class="smaller">(Canada)</span></label></td>
+          <td colspan="2"><input id="calculated_humidex" name="calculated_humidex" type="text" readonly disabled></td>
+        </tr>
+        <tr class="calculated_wrapper" id="calculated_heatindex_c_wrapper">
+          <td><label id="calculated_heatindex_c_label" for="calculated_heatindex_c">Heat Index <span class="smaller">(United States)</span></label></td>
+          <td><input id="calculated_heatindex_c" name="calculated_heatindex_c" type="text" readonly disabled>&#176;C</td>
+          <td><input id="calculated_heatindex_f" name="calculated_heatindex_f" type="text" readonly disabled>&#176;C</td>
         </tr>
       </table>
     </form>
