@@ -48,15 +48,21 @@
         width: 100%;
       }
     }
-    main {
-      border-top: 1px solid #969696;
-      border-bottom: 1px solid #969696;
-    }
+    header,
+    h1 {
+      display: none;
+    } 
+    /*
     h1 {
       font-size: 1em;
       font-weight: 300;
       padding: 0 0.375em 0.375em 0.375em;
     }
+    main {
+      border-top: 1px solid #969696;
+      border-bottom: 1px solid #969696;
+    }
+    */
     a {
       color: #159;
       text-decoration: none;
@@ -132,13 +138,16 @@
     ul.cardwall li.xbox a {
       background-color: #1f7c0f;
     }
+    ul.cardwall li.wx_humidex_calc a {
+      background-color: #eeb600;
+    }
   </style>
   <title>Vincent Grovestine</title>
 </head>
 <body>
   <div id="container">
     <header>
-      <h1>Find me:</h1>
+      <h1>Vincent Grovestine</h1>
     </header>
     <main>
       <nav>
@@ -149,8 +158,7 @@
           <li class="reddit"><a href="https://www.reddit.com/user/PulmonaryGravy"><span class="icon fab fa-reddit-alien"></span> Reddit</a></li>
           <li class="github"><a href="https://github.com/vgrovestine"><span class="icon fab fa-github"></span> GitHub</a></li>
           <li class="mixcloud"><a href="http://www.mixcloud.com/PulmonaryGravy/"><span class="icon fab fa-mixcloud"></span> Mixcloud</a></li>
-          <li class="xbox"><a href="https://account.xbox.com/en-ca/Profile?gamertag=PulmonaryGravyX"><span class="icon fab fa-xbox"></span> Xbox</a></li>
-          <li class="wotc"><a href="https://mtga.untapped.gg/profile/ca38a7a9-af54-4323-8c37-1e3a58abe4d3/CMYFDVHADZASLIVYZSZXQ3ZGCI"><span class="icon fab fa-wizards-of-the-coast"></span> MtG Arena</a></li>
+          <li class="wx_humidex_calc"><a href="./humidex/index.html"><span class="icon fas fa-temperature-high"></span> Humidex Calculator</a></li>
         </ul>
       </nav>
     </main>
