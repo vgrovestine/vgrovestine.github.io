@@ -2,12 +2,14 @@
 <html>
   <head>
     <title>Humidex Calculator</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,500&display=swap" rel="stylesheet">
     <style>
       body,
       input[type="text"] {
         font-size: 4vw;
-        font-family: Roboto, serif;
+        font-family: Roboto, sans-serif;
+        font-weight: normal;
+        font-weight: 300;
         background-color: #fff;
         color: #111;
       }
@@ -33,38 +35,34 @@
       .smaller {
         font-size: 0.5em;
       }
-      .hidden {
-        display: none;
-      }
       #datetime_wrapper td {
         border-bottom: 0.03125em solid #555;
         font-weight: bold;
+        font-weight: 500;
       }
-      /*
-      #temperature_wrapper,
-      #rel_humidity_wrapper { }
-      */
+      #temperature_wrapper input[type="text"],
+      #rel_humidity_wrapper input[type="text"] {
+        box-shadow: inset 0.03125em 0.03125em 0.03125em #e6e6e6;
+        color: #014;
+      }
       #calculated_humidex_wrapper,
       #calculated_heatindex_c_wrapper,
       #calculated_wetbulb_c_wrapper {
         display: none;
       }
       #legend_wrapper td {
-        color: #555;
         font-size: 0.5em;
         text-align: center;
         padding: 0.5em;
       }
       #legend_wrapper td label {
-        display: none;
-      }
-      #legend_wrapper td span {
-        margin: 0 0.5em;
+        display: inline-block;
       }
       #legend_wrapper td .box {
         display: inline-block;
-        width: 1em;
-        height: 0.75em;
+        width: 15%;
+        height: 1.25em;
+        color: transparent;
       }
       .calculated_wrapper label a {
         color: inherit;
@@ -74,19 +72,24 @@
         border-color: transparent;
         background-color: transparent;
       }
-      .impact_nil * {
+      .impact_nil *,
+      .impact_nil.box {
         background-color: lightgreen; 
       }
-      .impact_low * {
+      .impact_low *,
+      .impact_low.box {
         background-color: yellow;
       }
-      .impact_moderate * {
+      .impact_moderate *,
+      .impact_moderate.box {
         background-color: orange;
       }
-      .impact_high * {
+      .impact_high *,
+      .impact_high.box {
         background-color: orangered;
       }
-      .impact_extreme * {
+      .impact_extreme *,
+      .impact_extreme.box {
         background-color: crimson;
       }
     </style>
@@ -239,12 +242,12 @@
         </tr>
         <tr id="legend_wrapper">
           <td colspan="3">
-            <label>Feel-like Impact:</label>
-            <span class="impact_extreme"><div class="box"></div> Extreme</span>
-            <span class="impact_high"><div class="box"></div> High</span>
-            <span class="impact_moderate"><div class="box"></div> Moderate</span>
-            <span class="impact_low"><div class="box"></div> Low</span>
-            <span class="impact_nil"><div class="box"></div> Nil</span>
+            <label>Scale:</label>
+            <div class="box impact_extreme">Extreme</div>
+            <div class="box impact_high">High</div>
+            <div class="box impact_moderate">Moderate</div>
+            <div class="box impact_low">Low</div>
+            <div class="box impact_nil">Nil</div>
           </td>
         </tr>
         <tr class="calculated_wrapper" id="calculated_wetbulb_c_wrapper">
