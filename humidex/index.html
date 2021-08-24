@@ -110,16 +110,16 @@
           }
           x_calculated_humidex = Math.round(x_calculated_humidex);
           form.calculated_humidex.value = x_calculated_humidex;
-          if(x_calculated_humidex > 45) {
+          if(x_calculated_humidex > 54) {
             document.getElementById("calculated_humidex_wrapper").className = "calculated_wrapper impact_extreme";
           }
-          else if(x_calculated_humidex >= 40) {
+          else if(x_calculated_humidex >= 45) {
             document.getElementById("calculated_humidex_wrapper").className = "calculated_wrapper impact_high";
           }
-          else if(x_calculated_humidex >= 30) {
+          else if(x_calculated_humidex >= 40) {
             document.getElementById("calculated_humidex_wrapper").className = "calculated_wrapper impact_moderate";
           }
-          else if(x_calculated_humidex >= 20) {
+          else if(x_calculated_humidex >= 30) {
             document.getElementById("calculated_humidex_wrapper").className = "calculated_wrapper impact_low";
           }
           else {
@@ -182,10 +182,10 @@
           x_calculated_wetbulb_c = Math.round(x_calculated_wetbulb_c);
           form.calculated_wetbulb_c.value = x_calculated_wetbulb_c;
           form.calculated_wetbulb_f.value = convertCelciusToFarenheit(x_calculated_wetbulb_c);
-          if(x_calculated_wetbulb_c >= 35) {
+          if(x_calculated_wetbulb_c >= 32) {
             document.getElementById("calculated_wetbulb_c_wrapper").className = "calculated_wrapper impact_extreme";
           }
-          else if(x_calculated_wetbulb_c >= 31) {
+          else if(x_calculated_wetbulb_c >= 30) {
             document.getElementById("calculated_wetbulb_c_wrapper").className = "calculated_wrapper impact_high";
           }
           else if(x_calculated_wetbulb_c >= 28) {
