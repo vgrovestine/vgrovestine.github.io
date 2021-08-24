@@ -110,13 +110,13 @@
           }
           x_calculated_humidex = Math.round(x_calculated_humidex);
           form.calculated_humidex.value = x_calculated_humidex;
-          if(x_calculated_humidex > 54) {
+          if(x_calculated_humidex > 44) {
             document.getElementById("calculated_humidex_wrapper").className = "calculated_wrapper impact_extreme";
           }
-          else if(x_calculated_humidex >= 45) {
+          else if(x_calculated_humidex >= 40) {
             document.getElementById("calculated_humidex_wrapper").className = "calculated_wrapper impact_high";
           }
-          else if(x_calculated_humidex >= 40) {
+          else if(x_calculated_humidex >= 35) {
             document.getElementById("calculated_humidex_wrapper").className = "calculated_wrapper impact_moderate";
           }
           else if(x_calculated_humidex >= 30) {
